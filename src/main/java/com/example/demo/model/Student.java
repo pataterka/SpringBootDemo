@@ -1,8 +1,10 @@
-package com.example.demo;
+package com.example.demo.model;
 
 import java.util.Date;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 public class Student {
     @Id
     private long id;
@@ -17,6 +19,7 @@ public class Student {
     public Student(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName= lastName;
+        this.year = getYear();
     }
 
     //private String subject;
