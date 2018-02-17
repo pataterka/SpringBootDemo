@@ -10,6 +10,8 @@ public class Student {
 
     private String firstName;
     private String lastName;
+
+
     private int year;
 
     public Student() {
@@ -21,8 +23,6 @@ public class Student {
         this.year = getYear();
     }
 
-
-    //private String subject;
 
     public String getId() {
         return id;
@@ -51,13 +51,7 @@ public class Student {
     public void setYear(int year) {
         this.year = year;
     }
-    //    public String getSubject() {
-//        return subject;
-//    }
-//
-//    public void setSubject(String subject) {
-//        this.subject = subject;
-//    }
+
 
     @Override
     public String toString() {
@@ -65,6 +59,7 @@ public class Student {
                 "id=" + id +
                 ", name='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", year='" + year + '\'' +
                 '}';
     }
 }

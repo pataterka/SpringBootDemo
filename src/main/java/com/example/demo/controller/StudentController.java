@@ -22,7 +22,7 @@ class StudentController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Student addStudent(@RequestParam(value = "firstName") String firstName
             , @RequestParam(value = "lastName") String lastName
-            , @RequestParam(value = "year", defaultValue = "1") int year) {
+            , @RequestParam(value = "year", required = false, defaultValue = "1") int year) {
         Student student = new Student(firstName, lastName);
         return mongoDBStudentService.create(student);
 

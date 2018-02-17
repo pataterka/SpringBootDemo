@@ -1,7 +1,22 @@
 package com.example.demo.repository;
 
-public interface SchoolRepository {
+import com.example.demo.model.School;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-    //Todo
+import java.util.List;
+
+@RepositoryRestResource(collectionResourceRel = "schools", path = "schools")
+
+public interface SchoolRepository extends MongoRepository<School, String> {
+
+    public List<School> findAll();
+
+    public School findById(String id);
+
+    public boolean existsById(@Param("id") String id);
+
+    public School deleteById();
 
 }
