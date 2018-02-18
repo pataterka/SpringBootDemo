@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.School;
+import com.example.demo.model.Student;
 import com.example.demo.repository.SchoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,13 @@ public class MongoDBSchoolService implements SchoolService {
     }
 
     @Override
-    public List<School> findAll() {
+    public List<School> findAllSchools() {
         return schoolRepository.findAll();
+    }
+
+    @Override
+    public List<Student> findAllStudentsInSchool() {
+        return null;
     }
 
     @Override

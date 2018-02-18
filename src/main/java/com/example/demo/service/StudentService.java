@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.model.School;
 import com.example.demo.model.Student;
 
 import java.util.List;
@@ -11,7 +10,7 @@ public interface StudentService {
 
     Student findById(String id);
 
-    List<School> findAll();
+    List<Student> findAllStudents();
 
     Student delete(String id) throws Exception;
 

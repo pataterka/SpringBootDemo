@@ -17,6 +17,8 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     public Student findByFirstName(@Param("firstName") String firstName);
 
+    public List<Student> findAllBySchoolId(@Param("schoolId") String schoolId);
+
     public List<Student> findByLastName(@Param("lastName") String lastName);
 
     public List<Student> findByYear(@Param("year") int year);

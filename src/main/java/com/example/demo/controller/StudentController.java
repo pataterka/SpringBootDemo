@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Student;
 import com.example.demo.service.MongoDBStudentService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/rest/student")
+@Api(value = "onlineStudentManagement", description = "Operations to manage students in the School System")
 class StudentController {
 
     @Autowired
@@ -16,14 +18,17 @@ class StudentController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<Student> getAllStudents() {
-        return mongoDBStudentService.findAll();
+        return mongoDBStudentService.findAllStudents();
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Student addStudent(@RequestParam(value = "firstName") String firstName
             , @RequestParam(value = "lastName") String lastName
-            , @RequestParam(value = "year", required = false, defaultValue = "1") int year) {
+            , @RequestParam(value = "year", required = false, defaultValue = "1") int year
+            , @RequestParam(value = "schoolId") String schoolId) {
         Student student = new Student(firstName, lastName);
+        student.setYear(year);
+        student.setSchoolId(schoolId);
         return mongoDBStudentService.create(student);
 
     }

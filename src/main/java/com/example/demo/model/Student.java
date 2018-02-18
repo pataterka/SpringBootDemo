@@ -13,6 +13,7 @@ public class Student {
 
 
     private int year;
+    private String schoolId;
 
     public Student() {
     }
@@ -20,7 +21,8 @@ public class Student {
     public Student(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName= lastName;
-        this.year = getYear();
+        this.year = year;
+        this.schoolId = schoolId;
     }
 
 
@@ -61,5 +63,13 @@ public class Student {
                 ", lastName='" + lastName + '\'' +
                 ", year='" + year + '\'' +
                 '}';
+    }
+
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
     }
 }

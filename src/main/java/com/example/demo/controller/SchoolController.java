@@ -2,7 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.model.School;
 import com.example.demo.model.Student;
+import com.example.demo.service.MongoDBSchoolService;
 import com.example.demo.service.MongoDBStudentService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,16 +16,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value="/rest/school")
+@Api(value = "onlineSchoolManagement", description = "Operations to manage the School System")
 class SchoolController {
     @Autowired
-    private MongoDBStudentService mongoDBSchoolService;
+    private MongoDBSchoolService mongoDBSchoolService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<School> getAllSchools() {
-        return mongoDBSchoolService.findAll();
+        return mongoDBSchoolService.findAllSchools();
     }
 
-    @RequestMapping(value = "/students", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/students", method = RequestMethod.GET)
     public Student getStudentsInSchool(@PathVariable String id) {
 
         //Todo
