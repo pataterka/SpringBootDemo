@@ -1,11 +1,11 @@
 package com.example.demo.service;
 
-import com.example.demo.model.School;
 import com.example.demo.model.Student;
 import com.example.demo.repository.SchoolRepository;
 import com.example.demo.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -13,11 +13,13 @@ import java.util.List;
 public class MongoDBStudentService implements StudentService {
     private final StudentRepository studentRepository;
     private final SchoolRepository schoolRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public MongoDBStudentService(StudentRepository studentRepository, SchoolRepository schoolRepository) {
         this.studentRepository = studentRepository;
         this.schoolRepository = schoolRepository;
+//        this.bCryptPasswordEncoder = bCrypt;
     }
 
     @Override

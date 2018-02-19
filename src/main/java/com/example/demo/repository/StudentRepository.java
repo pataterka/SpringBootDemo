@@ -31,5 +31,6 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     public Student deleteById(@Param("id") String id);
 
+    public Student findByUsername(@Param("username") String username);
 }
 

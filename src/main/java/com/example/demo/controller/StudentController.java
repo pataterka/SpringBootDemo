@@ -31,11 +31,17 @@ class StudentController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ApiOperation(value = "Create a student", response = Student.class)
-    public Student addStudent(@RequestParam(value = "firstName") String firstName
-            , @RequestParam(value = "lastName") String lastName
-            , @RequestParam(value = "year", required = false, defaultValue = "1") int year
-            , @RequestParam(value = "schoolId", required = false) String schoolId) {
-        Student student = new Student(firstName, lastName);
+    public Student addStudent(@RequestParam(value = "username") String username,
+                              @RequestParam(value = "password") String password,
+                              @RequestParam(value = "firstName") String firstName,
+                              @RequestParam(value = "lastName") String lastName,
+                              @RequestParam(value = "year", required = false, defaultValue = "1") int year,
+                              @RequestParam(value = "schoolId", required = false) String schoolId) {
+        Student student = new Student();
+        student.setUsername(username);
+        student.setPassword(password);
+        student.setFirstName(firstName);
+        student.setLastName(lastName);
         student.setYear(year);
         student.setSchoolId(schoolId);
         return mongoDBStudentService.create(student);
