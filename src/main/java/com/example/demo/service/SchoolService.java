@@ -13,10 +13,14 @@ public interface SchoolService {
 
     List<School> findAllSchools();
 
-    List<Student> findAllStudentsInSchool();
+    List<Student> findAllStudentsInSchool(String id) throws Exception;
 
-    School delete(String id) throws Exception;
+    List<Student> findAllStudentsInSchoolYear(String id, int year) throws Exception;
 
-    School update(String id, School student) throws Exception;
+    School deleteById(String id) throws Exception;
+
+    List<School> deleteAll() throws Exception;
+
+    School update(String id, School school) throws Exception;
 
 }

@@ -61,6 +61,11 @@ public class DemoApplicationTests {
         assertNotNull(pati.getYear());
     }
 
+//    @Test
+//    private void setsSchoolIdOnSave{
+//
+//    }
+
     @Test
     public void findsByFirstName() {
 

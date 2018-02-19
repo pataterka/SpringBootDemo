@@ -17,7 +17,9 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     public Student findByFirstName(@Param("firstName") String firstName);
 
-    public List<Student> findAllBySchoolId(@Param("schoolId") String schoolId);
+    public List<Student> findBySchoolId(@Param("schoolId") String schoolId);
+
+    public List<Student> findBySchoolIdAndYear(@Param("schoolId") String schoolId, @Param("year") int year);
 
     public List<Student> findByLastName(@Param("lastName") String lastName);
 
@@ -27,7 +29,7 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     public boolean existsByFirstName(@Param("firstName") String firstName);
 
-    public Student deleteById();
+    public Student deleteById(@Param("id") String id);
 
 }
 

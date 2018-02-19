@@ -13,10 +13,12 @@ public interface SchoolRepository extends MongoRepository<School, String> {
 
     public List<School> findAll();
 
-    public School findById(String id);
+    public School findById(@Param("id") String id);
 
     public boolean existsById(@Param("id") String id);
 
     public School deleteById();
+
+    public void deleteAll();
 
 }

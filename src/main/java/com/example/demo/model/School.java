@@ -5,11 +5,16 @@ import org.springframework.data.annotation.Id;
 public class School {
     @Id
     private String id;
+
     private String name;
-    private String schoolType;
+    private SchoolType schoolType;
 
     public School() {
+    }
 
+    public School(String name, SchoolType schoolType) {
+        this.name = name;
+        this.schoolType = schoolType;
     }
 
     public String getName() {
@@ -20,11 +25,16 @@ public class School {
         this.name = name;
     }
 
-    public String getSchoolType() {
+    public SchoolType getSchoolType() {
         return schoolType;
     }
 
-    public void setSchoolType(String schoolType) {
+    public void setSchoolType(SchoolType schoolType) {
         this.schoolType = schoolType;
     }
+
+    public String getId() {
+        return id;
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Student;
 import com.example.demo.service.MongoDBStudentService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,15 +18,23 @@ class StudentController {
     private MongoDBStudentService mongoDBStudentService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
+    @ApiOperation(value = "Get all the students")
     public List<Student> getAllStudents() {
         return mongoDBStudentService.findAllStudents();
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "Get a student with the id", response = Student.class)
+    public Student getStudent(@PathVariable String id) {
+        return mongoDBStudentService.findById(id);
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ApiOperation(value = "Create a student", response = Student.class)
     public Student addStudent(@RequestParam(value = "firstName") String firstName
             , @RequestParam(value = "lastName") String lastName
             , @RequestParam(value = "year", required = false, defaultValue = "1") int year
-            , @RequestParam(value = "schoolId") String schoolId) {
+            , @RequestParam(value = "schoolId", required = false) String schoolId) {
         Student student = new Student(firstName, lastName);
         student.setYear(year);
         student.setSchoolId(schoolId);
@@ -34,6 +43,7 @@ class StudentController {
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+    @ApiOperation(value = "Update a student", response = Student.class)
     public Student updateStudent(@PathVariable String id, @RequestBody Student student) throws Exception {
 
         student = mongoDBStudentService.update(id, student);
@@ -41,14 +51,10 @@ class StudentController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    @ApiOperation(value = "Delete a student", response = Student.class)
     public Student deleteStudent(@PathVariable String id) throws Exception {
 
         Student student = mongoDBStudentService.delete(id);
         return student;
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Student getStudent(@PathVariable String id) {
-        return mongoDBStudentService.findById(id);
     }
 }

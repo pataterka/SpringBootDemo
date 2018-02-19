@@ -15,4 +15,6 @@ public interface StudentService {
     Student delete(String id) throws Exception;
 
     Student update(String id, Student student) throws Exception;
+
+    List<Student> updateYear() throws Exception;
 }
