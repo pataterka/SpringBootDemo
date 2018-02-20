@@ -11,14 +11,14 @@ import java.util.List;
 
 public interface SchoolRepository extends MongoRepository<School, String> {
 
-    public List<School> findAll();
+    List<School> findAll();
 
-    public School findById(@Param("id") String id);
+    School findById(@Param("id") String id);
 
-    public boolean existsById(@Param("id") String id);
+    boolean existsById(@Param("id") String id);
 
-    public School deleteById();
+    School deleteById();
 
-    public void deleteAll();
+    void deleteAll();
 
 }

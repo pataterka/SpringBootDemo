@@ -83,7 +83,14 @@ public class MongoDBSchoolService implements SchoolService {
     public List<School> deleteAll() throws Exception {
         List<School> deletedSchools = schoolRepository.findAll();
         if (deletedSchools.isEmpty()) throw new Exception("There are no schools to delete");
-        else schoolRepository.deleteAll();
+        else {
+            schoolRepository.deleteAll();
+            List<Student> students = studentRepository.findAll();
+            for (Student s : students) {
+                s.setSchoolId(null);
+                studentRepository.save(s);
+            }
+        }
 
         return deletedSchools;
     }

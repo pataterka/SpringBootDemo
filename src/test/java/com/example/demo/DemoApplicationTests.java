@@ -47,7 +47,7 @@ public class DemoApplicationTests {
         mongoDBSchoolService.create(itu);
 
         dave = new Student("Dave", "Matthews");
-        dave.setSchoolId(uep.getId());
+        dave.setYear(2);
         mongoDBStudentService.create(dave);
         oliver = new Student("Oliver", "Matthews");
         mongoDBStudentService.create(oliver);
@@ -81,7 +81,7 @@ public class DemoApplicationTests {
     @Test
     public void setsYearOnSave() {
 
-        assertNotNull(dave.getYear());
+        assertNotNull(carter.getYear());
     }
 
     @Test
@@ -127,6 +127,13 @@ public class DemoApplicationTests {
     }
 
     @Test
+    public void findsAllStudentsInSchoolYear() throws Exception {
+        List<Student> result = mongoDBSchoolService.findAllStudentsInSchoolYear(uep.getId(), 2);
+        assertTrue(result.size() == 1);
+//        assertTrue(result.get(0).getFirstName()== "Dave");
+    }
+
+    @Test
     public void deletesStudent() throws Exception {
 
         mongoDBStudentService.delete(carter.getId());
@@ -134,14 +141,37 @@ public class DemoApplicationTests {
     }
 
     @Test
+    public void deletesSchool() throws Exception {
+        String id = uep.getId();
+        mongoDBSchoolService.deleteById(id);
+        assertNull(schoolRepository.findById(id));
+        assertTrue(studentRepository.findBySchoolId(id).isEmpty());
+    }
+
+    @Test
+    public void deletesAllSchools() throws Exception {
+        mongoDBSchoolService.deleteAll();
+        assertTrue(schoolRepository.findAll().isEmpty());
+        assertTrue(studentRepository.findById(dave.id).getSchoolId() == null);
+    }
+
+    @Test
     public void updatesStudent() throws Exception {
         dave.setFirstName("David");
-        dave.setYear(2);
+        dave.setYear(3);
         mongoDBStudentService.update(dave.id, dave);
 
         assertTrue(dave.getFirstName() == "David");
-        assertTrue(dave.getYear() == 2);
+        assertTrue(dave.getYear() == 3);
 
+    }
+
+    @Test
+    public void updatesSchool() throws Exception {
+        uep.setName("Poznan University of Economics");
+        mongoDBSchoolService.update(uep.getId(), uep);
+
+        assertTrue(uep.getName() == "Poznan University of Economics");
     }
 
     @Test

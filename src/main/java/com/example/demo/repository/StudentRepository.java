@@ -11,19 +11,19 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 public interface StudentRepository extends MongoRepository<Student, String> {
 
-    public List<Student> findAll();
+    List<Student> findAll();
 
-    public Student findById(String id);
+    Student findById(String id);
 
-    public List<Student> findBySchoolId(@Param("schoolId") String schoolId);
+    List<Student> findBySchoolId(@Param("schoolId") String schoolId);
 
-    public List<Student> findBySchoolIdAndYear(@Param("schoolId") String schoolId, @Param("year") int year);
+    List<Student> findBySchoolIdAndYear(@Param("schoolId") String schoolId, @Param("year") int year);
 
-    public List<Student> findByLastName(@Param("lastName") String lastName);
+    List<Student> findByLastName(@Param("lastName") String lastName);
 
-    public boolean existsById(@Param("id") String id);
+    boolean existsById(@Param("id") String id);
 
-    public boolean existsByFirstName(@Param("firstName") String firstName);
+    boolean existsByFirstName(@Param("firstName") String firstName);
 
 }
 
