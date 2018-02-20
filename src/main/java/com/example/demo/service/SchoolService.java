@@ -9,7 +9,7 @@ public interface SchoolService {
 
     School create(School school);
 
-    School findById(String id);
+    School findById(String id) throws Exception;
 
     List<School> findAllSchools();
 

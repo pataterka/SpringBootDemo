@@ -15,22 +15,15 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     public Student findById(String id);
 
-    public Student findByFirstName(@Param("firstName") String firstName);
-
     public List<Student> findBySchoolId(@Param("schoolId") String schoolId);
 
     public List<Student> findBySchoolIdAndYear(@Param("schoolId") String schoolId, @Param("year") int year);
 
     public List<Student> findByLastName(@Param("lastName") String lastName);
 
-    public List<Student> findByYear(@Param("year") int year);
-
     public boolean existsById(@Param("id") String id);
 
     public boolean existsByFirstName(@Param("firstName") String firstName);
 
-    public Student deleteById(@Param("id") String id);
-
-    public Student findByUsername(@Param("username") String username);
 }
 

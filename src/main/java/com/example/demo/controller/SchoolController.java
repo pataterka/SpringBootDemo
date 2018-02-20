@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/rest/school")
+@RequestMapping(value = "/rest/schools")
 @Api(value = "onlineSchoolManagement", description = "Operations to manage the School System")
 class SchoolController {
     @Autowired
@@ -33,7 +33,7 @@ class SchoolController {
     }
 
     @RequestMapping(value = "/{id}/{year}/students", method = RequestMethod.GET)
-    @ApiOperation(value = "Get all the students in a school, on a certain year")
+    @ApiOperation(value = "Get all the students in a certain school, on a certain year")
     private List<Student> getStudentsInSchoolYear(@PathVariable String id, int year) throws Exception {
         return mongoDBSchoolService.findAllStudentsInSchoolYear(id, year);
     }
@@ -47,19 +47,19 @@ class SchoolController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    @ApiOperation(value = "Delete a school", response = School.class)
+    @ApiOperation(value = "Delete a certain school", response = School.class)
     private School deleteSchool(@PathVariable String id) throws Exception {
         return mongoDBSchoolService.deleteById(id);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteAll", method = RequestMethod.DELETE)
     @ApiOperation(value = "Delete all the schools")
     private List<School> deleteAllSchools() throws Exception {
         return mongoDBSchoolService.deleteAll();
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    @ApiOperation(value = "Update a school", response = School.class)
+    @ApiOperation(value = "Update a certain school", response = School.class)
     private School updateSchool(@PathVariable String id, @RequestBody School school) throws Exception {
         school = mongoDBSchoolService.update(id, school);
         return school;

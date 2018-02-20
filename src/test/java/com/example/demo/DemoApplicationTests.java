@@ -1,118 +1,154 @@
 package com.example.demo;
 
+import com.example.demo.model.School;
 import com.example.demo.model.Student;
+import com.example.demo.repository.SchoolRepository;
 import com.example.demo.repository.StudentRepository;
+import com.example.demo.service.MongoDBSchoolService;
 import com.example.demo.service.MongoDBStudentService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
+import static com.example.demo.model.SchoolType.HIGH_SCHOOL;
+import static com.example.demo.model.SchoolType.UNIVERSITY;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DemoApplicationTests {
     @Autowired
-    StudentRepository repository;
-
+    StudentRepository studentRepository;
+    @Autowired
+    SchoolRepository schoolRepository;
     @Autowired
     MongoDBStudentService mongoDBStudentService;
+    @Autowired
+    MongoDBSchoolService mongoDBSchoolService;
 
     Student dave, oliver, carter;
+    School uep, upc, itu;
 
     @Before
     public void setUp() {
 
-        repository.deleteAll();
+        studentRepository.deleteAll();
+        schoolRepository.deleteAll();
+        uep = new School("Uniwersytet Ekonomiczny w Poznaniu", UNIVERSITY);
+        mongoDBSchoolService.create(uep);
+        upc = new School("Universitat Politecnica de Catalunya", UNIVERSITY);
+        mongoDBSchoolService.create(upc);
+        itu = new School("IT University of Copenhagen", UNIVERSITY);
+        mongoDBSchoolService.create(itu);
 
-        dave.setFirstName("Dave");
-        dave.setLastName("Matthews");
-        repository.save(dave);
-        oliver.setFirstName("Oliver");
-        oliver.setLastName("Matthews");
-        repository.save(oliver);
-        carter.setFirstName("Carter");
-        carter.setLastName("Beauford");
-        repository.save(carter);
-    }
+        dave = new Student("Dave", "Matthews");
+        dave.setSchoolId(uep.getId());
+        mongoDBStudentService.create(dave);
+        oliver = new Student("Oliver", "Matthews");
+        mongoDBStudentService.create(oliver);
+        carter = new Student("Carter", "Beauford");
+        mongoDBStudentService.create(carter);
 
-    @Test
-    public void savesNewStudent() {
-        Student puppero = new Student();
-        puppero.setUsername("puppero");
-        puppero.setPassword("secret");
-        puppero.setFirstName("Fluffy");
-        puppero.setLastName("Puppero");
-        mongoDBStudentService.create(puppero);
-
-        assertTrue(repository.existsById(puppero.id));
     }
 
     @Test
     public void setsIdOnSave() {
-//
-//        Student peter = repository.save(new Student("Peter", "Pan"));
-//
-//        assertNotNull(peter.id);
-        //assertTrue(repository.findById(peter.id).equals(peter));
+
+        assertNotNull(dave.id);
+    }
+
+    @Test
+    public void savesNewStudent() {
+        Student puppero = new Student("Fluffy", "Puppero");
+        mongoDBStudentService.create(puppero);
+
+        assertTrue(studentRepository.existsById(puppero.id));
+    }
+
+    @Test
+    public void savesNewSchool() {
+        School highschool = new School("Orestad Gymnasium", HIGH_SCHOOL);
+        mongoDBSchoolService.create(highschool);
+
+        assertTrue(schoolRepository.existsById(highschool.getId()));
     }
 
     @Test
     public void setsYearOnSave() {
 
-//        Student pati = repository.save(new Student("Pati", "Taterka"));
-//
-//        assertNotNull(pati.getYear());
-    }
-
-//    @Test
-//    private void setsSchoolIdOnSave{
-//
-//    }
-
-    @Test
-    public void findsByFirstName() {
-
-        Student result = repository.findByFirstName("Oliver");
-
-        assertTrue(result.getLastName().equals("Matthews"));
+        assertNotNull(dave.getYear());
     }
 
     @Test
-    public void findsByLastName() {
+    public void setsSchoolIdOnSave() {
+        Student peter = new Student("Peter", "Pan");
+        mongoDBStudentService.create(peter);
+        assertNotNull(peter.getSchoolId());
+//        assertTrue(peter.getSchoolId() == uep.getId());
+    }
 
-        List<Student> result = repository.findByLastName("Beauford");
+    @Test
+    public void findsAllStudents() {
+        List<Student> stu = mongoDBStudentService.findAllStudents();
+        assertFalse(stu.isEmpty());
+        assertTrue(stu.size() == 3);
+
+    }
+
+    @Test
+    public void findsAllSchools() {
+        List<School> schools = mongoDBSchoolService.findAllSchools();
+        assertFalse(schools.isEmpty());
+    }
+
+    @Test
+    public void findsStudentByLastName() throws Exception {
+
+        List<Student> result = mongoDBStudentService.findByLastName("Beauford");
 
         assertTrue(result.size() == 1);
         assertTrue(result.get(0).getFirstName().equals("Carter"));
-//        extracting("firstName").contains("Carter");
 
-        List<Student> result2 = repository.findByLastName("Matthews");
+        List<Student> result2 = mongoDBStudentService.findByLastName("Matthews");
 
         assertTrue(result2.size() == 2);
-//        assertTrue(result.get(0).getFirstName().equals(""));
     }
 
     @Test
-    public void deletesStudent() {
-        repository.delete(carter);
-        assertFalse(repository.existsByFirstName("Carter"));
+    public void findsAllStudentsInSchool() throws Exception {
+        List<Student> result = mongoDBSchoolService.findAllStudentsInSchool(uep.getId());
+        assertFalse(result.isEmpty());
+        assertTrue(result.size() == 3);
     }
 
-//    @Test
-//    public void findsByExample() {
-//
-//        Customer probe = new Customer(null, "Matthews");
-//
-//        List<Customer> result = repository.findAll(Example.of(probe));
-//
-//        assertThat(result).hasSize(2).extracting("firstName").contains("Dave", "Oliver August");
-//    }
+    @Test
+    public void deletesStudent() throws Exception {
+
+        mongoDBStudentService.delete(carter.getId());
+        assertFalse(studentRepository.existsByFirstName("Carter"));
+    }
+
+    @Test
+    public void updatesStudent() throws Exception {
+        dave.setFirstName("David");
+        dave.setYear(2);
+        mongoDBStudentService.update(dave.id, dave);
+
+        assertTrue(dave.getFirstName() == "David");
+        assertTrue(dave.getYear() == 2);
+
+    }
+
+    @Test
+    public void updatesYear() throws Exception {
+        int before = dave.getYear();
+        mongoDBStudentService.updateYear();
+        assertTrue(before >= dave.getYear());
+    }
 
 }

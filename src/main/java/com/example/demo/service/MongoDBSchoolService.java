@@ -27,8 +27,11 @@ public class MongoDBSchoolService implements SchoolService {
     }
 
     @Override
-    public School findById(String id) {
-        return schoolRepository.findById(id);
+    public School findById(String id) throws Exception {
+        School school = schoolRepository.findById(id);
+        if (school == null) throw new Exception("No school with id: " + id);
+
+        return school;
     }
 
     @Override
@@ -63,6 +66,12 @@ public class MongoDBSchoolService implements SchoolService {
         School deleted = schoolRepository.findById(id);
         if (deleted != null) {
             schoolRepository.delete(deleted);
+            List<Student> students = studentRepository.findBySchoolId(id);
+            for (Student s : students) {
+                s.setSchoolId(null);
+                studentRepository.save(s);
+            }
+
 
         } else {
             throw new Exception("Cannot deleteById a school " + id + " as it does not exist");

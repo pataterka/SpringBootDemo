@@ -8,9 +8,11 @@ public interface StudentService {
 
     Student create(Student student);
 
-    Student findById(String id);
-
     List<Student> findAllStudents();
+
+    Student findById(String id) throws Exception;
+
+    List<Student> findByLastName(String lastName) throws Exception;
 
     Student delete(String id) throws Exception;
 
